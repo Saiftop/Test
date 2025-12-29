@@ -23,7 +23,7 @@
         .bot { background: #254a2e; align-self: flex-start; }
         .user { background: var(--g); color: #000; align-self: flex-end; }
         .chat-in { display: flex; padding: 10px; background: #000; gap: 8px; }
-        .chat-in input { flex: 1; padding: 12px; border-radius: 25px; border: none; outline: none; }
+        .chat-in input { flex: 1; padding: 12px; border-radius: 25px; border: none; outline: none; background: #222; color: #fff; }
         .chat-in button { background: var(--g); border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
         .card { background: var(--c); padding: 20px; border-radius: 12px; border-right: 4px solid var(--g); cursor: pointer; transition: 0.3s; }
@@ -55,7 +55,7 @@
         <div id="ai" class="section active">
             <div class="chat-box">
                 <div class="chat-msgs" id="chatMsgs">
-                    <div class="msg bot">مرحباً يا سيف! أنا Saif AI. اسألني عن أي حديث أو دعاء لروح عمك مصطفى.</div>
+                    <div class="msg bot">مرحباً بك! أنا Saif AI. اسألني عن أي حديث، دعاء، أو نصيحة دينية لروح عمك مصطفى.</div>
                 </div>
                 <div class="chat-in">
                     <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeypress="if(event.key==='Enter') ask()">
@@ -67,15 +67,12 @@
         <div id="hesn" class="section">
             <div class="grid" id="hesnGrid"></div>
         </div>
-
         <div id="duaa" class="section">
             <div class="grid" id="duaaGrid"></div>
         </div>
-
         <div id="quran" class="section">
             <iframe src="https://tanzil.net/#1:1" style="width:100%; height:75vh; border-radius:15px; background: white;"></iframe>
         </div>
-
         <div id="radio" class="section">
             <div class="grid">
                 <div class="card" onclick="play('https://stream.radiojar.com/8s5u5tpdtwzuv', 'إذاعة القاهرة')"><h3>إذاعة القرآن من القاهرة</h3><p>بث مباشر</p></div>
@@ -83,7 +80,6 @@
                 <div class="card" onclick="play('https://qurango.net/radio/abdulbasit_abdulsamad.mp3', 'عبدالباسط عبدالصمد')"><h3>عبدالباسط عبدالصمد</h3><p>المصحف المرتل</p></div>
             </div>
         </div>
-
         <div id="sebha" class="section" style="text-align:center;">
             <div class="sebha-btn" onclick="countS()">
                 <h1 id="sNum">0</h1>
@@ -100,7 +96,6 @@
             <p id="mText" style="font-size:1.2rem; line-height:1.8;"></p>
         </div>
     </div>
-
     <div class="player-bar" id="pBar">
         <span id="pTitle"></span>
         <button class="nav-btn" style="background:red; border:none; color:white; padding:5px 10px;" onclick="stopP()">إيقاف</button>
@@ -108,22 +103,20 @@
     <audio id="audio"></audio>
 
     <script>
-        // دالة الـ AI الحقيقية
+        // وظيفة الـ AI باستخدام الـ API Key الخاص بك
         async function ask() {
-            const API_KEY = "AIzaSyDLbkXGGhVqmAG_TlJ0r-vkgyqacuz2RqE"; // المفتاح الخاص بك
+            const API_KEY = "AIzaSyDLbkXGGhVqmAG_TlJ0r-vkgyqacuz2RqE"; 
             let inp = document.getElementById('chatInput');
             let box = document.getElementById('chatMsgs');
             let val = inp.value.trim();
             if(!val) return;
 
-            // عرض رسالة المستخدم
             box.innerHTML += `<div class="msg user">${val}</div>`;
             inp.value = "";
             box.scrollTop = box.scrollHeight;
 
-            // إنشاء رسالة "جاري التفكير"
             let loadingId = "loading-" + Date.now();
-            box.innerHTML += `<div class="msg bot" id="${loadingId}">جاري التفكير...</div>`;
+            box.innerHTML += `<div class="msg bot" id="${loadingId}">... جاري التفكير</div>`;
             box.scrollTop = box.scrollHeight;
 
             try {
@@ -132,25 +125,24 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{
-                            parts: [{ text: `أنت مساعد ذكاء اصطناعي في موقع "صدقة جارية" لروح المرحوم (مصطفى محمد حسن). رد على المستخدم باللهجة المصرية وبأسلوب ديني محترم. السؤال: ${val}` }]
+                            parts: [{ text: `أنت مساعد ذكاء اصطناعي في موقع "صدقة جارية" لروح "مصطفى محمد حسن". رد بلهجة مصرية، وبأسلوب ديني هادئ ومحترم. السؤال: ${val}` }]
                         }]
                     })
                 });
 
                 const data = await response.json();
-                let reply = data.candidates[0].content.parts[0].text;
-
-                // استبدال نص التحميل بالرد الحقيقي
-                document.getElementById(loadingId).innerText = reply;
-
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    document.getElementById(loadingId).innerText = data.candidates[0].content.parts[0].text;
+                } else {
+                    document.getElementById(loadingId).innerText = "معلش يا سيف، حصلت مشكلة تقنية في الرد.";
+                }
             } catch (error) {
                 document.getElementById(loadingId).innerText = "معلش حصلت مشكلة، جرب تبعت تاني.";
-                console.error(error);
             }
             box.scrollTop = box.scrollHeight;
         }
 
-        // أذكار حصن المسلم الأصلية
+        // الأقسام والبيانات الأصلية
         const hesn = [
             {t:"أذكار الصباح", c:"أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له.."},
             {t:"أذكار المساء", c:"أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له.."},
