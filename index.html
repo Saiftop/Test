@@ -6,51 +6,33 @@
     <title>صدقة جارية | عمي مصطفى محمد حسن</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #0d1b0f; --gold: #d4af37; --card: #1a291c; --text: #f5f5f5; }
+        :root { --p: #0d1b0f; --g: #d4af37; --c: #1a291c; --t: #f5f5f5; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: var(--primary); color: var(--text); line-height: 1.6; }
-
-        /* هيدر ثابت */
-        .header { background: #000; padding: 30px 15px; text-align: center; border-bottom: 3px solid var(--gold); }
-        .header h1 { color: var(--gold); font-size: 1.8rem; }
-
-        /* قائمة التنقل */
-        .nav-bar { 
-            position: sticky; top: 0; background: #000; z-index: 1000;
-            display: flex; overflow-x: auto; padding: 10px; gap: 8px;
-            border-bottom: 1px solid var(--gold);
-        }
-        .nav-btn { 
-            background: var(--card); color: white; border: 1px solid var(--gold);
-            padding: 8px 18px; border-radius: 20px; white-space: nowrap; cursor: pointer;
-        }
-        .nav-btn.active { background: var(--gold); color: #000; font-weight: bold; }
-
+        body { background: var(--p); color: var(--t); padding-bottom: 70px; }
+        .header { background: #000; padding: 30px 15px; text-align: center; border-bottom: 3px solid var(--g); }
+        .header h1 { color: var(--g); font-size: 1.8rem; }
+        .nav-bar { position: sticky; top: 0; background: #000; z-index: 1000; display: flex; overflow-x: auto; padding: 10px; gap: 8px; border-bottom: 1px solid var(--g); }
+        .nav-btn { background: var(--c); color: white; border: 1px solid var(--g); padding: 8px 18px; border-radius: 20px; cursor: pointer; white-space: nowrap; }
+        .nav-btn.active { background: var(--g); color: #000; font-weight: bold; }
         .container { padding: 15px; max-width: 800px; margin: auto; }
         .section { display: none; }
         .section.active { display: block; }
-
-        /* الشات */
-        .chat-box { background: var(--card); border-radius: 15px; height: 400px; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #333; }
+        .chat-box { background: var(--c); border-radius: 15px; height: 450px; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #333; }
         .chat-msgs { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .msg { max-width: 80%; padding: 10px; border-radius: 10px; font-size: 0.9rem; }
+        .msg { max-width: 85%; padding: 12px; border-radius: 12px; font-size: 0.95rem; line-height: 1.5; }
         .bot { background: #254a2e; align-self: flex-start; }
-        .user { background: var(--gold); color: #000; align-self: flex-end; }
-        .chat-in { display: flex; padding: 10px; background: #000; gap: 5px; }
-        .chat-in input { flex: 1; padding: 10px; border-radius: 20px; border: none; }
-        .chat-in button { background: var(--gold); border: none; padding: 0 15px; border-radius: 20px; cursor: pointer; }
-
-        /* الكروت */
-        .grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .card { background: var(--card); padding: 15px; border-radius: 10px; border-right: 4px solid var(--gold); cursor: pointer; }
-
-        /* نافذة الذكر */
+        .user { background: var(--g); color: #000; align-self: flex-end; }
+        .chat-in { display: flex; padding: 10px; background: #000; gap: 8px; }
+        .chat-in input { flex: 1; padding: 12px; border-radius: 25px; border: none; outline: none; }
+        .chat-in button { background: var(--g); border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+        .card { background: var(--c); padding: 20px; border-radius: 12px; border-right: 4px solid var(--g); cursor: pointer; transition: 0.3s; }
+        .card:hover { background: #223a26; }
         .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); display:none; z-index:9999; justify-content:center; align-items:center; padding:20px; }
-        .modal-box { background: #111; border: 1px solid var(--gold); padding: 20px; border-radius: 15px; text-align: center; width: 100%; max-width: 500px; }
-
-        /* الإذاعة والسبحة */
-        .p-bar { position: fixed; bottom: 0; width: 100%; background: var(--gold); color: #000; padding: 10px; display: none; justify-content: space-between; font-weight: bold; }
-        .sebha-btn { width: 150px; height: 150px; border-radius: 50%; border: 5px solid var(--gold); margin: 20px auto; display: flex; align-items: center; justify-content: center; font-size: 3rem; cursor: pointer; }
+        .modal-box { background: #111; border: 2px solid var(--g); padding: 25px; border-radius: 15px; text-align: center; width: 100%; max-width: 500px; position: relative; }
+        .close-m { position: absolute; top: 5px; left: 10px; color: red; font-size: 1.5rem; cursor: pointer; }
+        .player-bar { position: fixed; bottom: 0; width: 100%; background: var(--g); color: #000; padding: 12px; display: none; justify-content: space-between; align-items: center; font-weight: bold; z-index: 5000; }
+        .sebha-btn { width: 180px; height: 180px; border-radius: 50%; border: 6px solid var(--g); margin: 30px auto; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--c); cursor: pointer; }
     </style>
 </head>
 <body>
@@ -73,7 +55,7 @@
         <div id="ai" class="section active">
             <div class="chat-box">
                 <div class="chat-msgs" id="chatMsgs">
-                    <div class="msg bot">مرحباً يا سيف! أنا Saif AI المطوّر. اسألني عن أي شيء يخص الصبر، المتوفى، أو الأذكار.</div>
+                    <div class="msg bot">مرحباً يا سيف! أنا Saif AI المطوّر. اسألني عن أي حديث أو دعاء لروح عمك مصطفى.</div>
                 </div>
                 <div class="chat-in">
                     <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا...">
@@ -91,82 +73,97 @@
         </div>
 
         <div id="quran" class="section">
-            <iframe src="https://tanzil.net/#1:1" style="width:100%; height:500px; border-radius:10px;"></iframe>
+            <iframe src="https://tanzil.net/#1:1" style="width:100%; height:75vh; border-radius:15px; background: white;"></iframe>
         </div>
 
         <div id="radio" class="section">
             <div class="grid">
-                <div class="card" onclick="play('https://stream.radiojar.com/8s5u5tpdtwzuv', 'إذاعة القاهرة')"><h3>إذاعة القاهرة</h3><p>بث مباشر</p></div>
+                <div class="card" onclick="play('https://stream.radiojar.com/8s5u5tpdtwzuv', 'إذاعة القاهرة')"><h3>إذاعة القرآن من القاهرة</h3><p>بث مباشر</p></div>
                 <div class="card" onclick="play('https://qurango.net/radio/mohammad_siddiq_alminshawi_mojawwad.mp3', 'المنشاوي')"><h3>الشيخ المنشاوي</h3><p>المصحف المجود</p></div>
+                <div class="card" onclick="play('https://qurango.net/radio/abdulbasit_abdulsamad.mp3', 'عبدالباسط عبدالصمد')"><h3>عبدالباسط عبدالصمد</h3><p>المصحف المرتل</p></div>
             </div>
         </div>
 
         <div id="sebha" class="section" style="text-align:center;">
             <div class="sebha-btn" onclick="countS()">
-                <span id="sNum">0</span>
+                <h1 id="sNum">0</h1>
+                <p>اضغط للتسبيح</p>
             </div>
-            <p onclick="resetS()" style="color:red; cursor:pointer;">تصفير العداد</p>
+            <button class="nav-btn" onclick="resetS()" style="background:#cc0000; border:none;">تصفير</button>
         </div>
     </div>
 
-    <div class="modal" id="modal" onclick="this.style.display='none'">
+    <div class="modal" id="modal">
         <div class="modal-box">
-            <h3 id="mTitle" style="color:var(--gold)"></h3>
-            <hr style="margin:10px 0; opacity:0.2;">
-            <p id="mText"></p>
+            <span class="close-m" onclick="document.getElementById('modal').style.display='none'">&times;</span>
+            <h3 id="mTitle" style="color:var(--g); margin-bottom:15px;"></h3>
+            <p id="mText" style="font-size:1.2rem; line-height:1.8;"></p>
         </div>
     </div>
 
-    <div class="p-bar" id="pBar">
+    <div class="player-bar" id="pBar">
         <span id="pTitle"></span>
-        <span onclick="stopP()" style="cursor:pointer;">[إيقاف ✖]</span>
+        <button class="nav-btn" style="background:red; border:none; color:white; padding:5px 10px;" onclick="stopP()">إيقاف</button>
     </div>
     <audio id="audio"></audio>
 
     <script>
-        // AI Logic
+        // AI - محرك داخلي فائق السرعة
         const brain = {
-            "صبر": "قال ﷺ: (ما أعطي أحد عطاء خيراً وأوسع من الصبر).",
-            "موت": "اللهم اغفر لعمي مصطفى وارحمه واجعل قبره روضة من رياض الجنة.",
-            "صدقة": "قال ﷺ: (إذا مات ابن آدم انقطع عمله إلا من ثلاث: صدقة جارية...)",
-            "أذكار": "أفضل الذكر 'لا إله إلا الله' وأفضل الدعاء 'الحمد لله'."
+            "صبر": "قال ﷺ: (ما أعطي أحد عطاء خيراً وأوسع من الصبر). اللهم ارزقنا الصبر على فراق عمي مصطفى.",
+            "موت": "اللهم اغفر لعمي مصطفى وارحمه واجعل قبره روضة من رياض الجنة ولا تجعله حفرة من حفر النار.",
+            "صدقة": "قال ﷺ: (إذا مات ابن آدم انقطع عمله إلا من ثلاث: صدقة جارية، أو علم ينتفع به، أو ولد صالح يدعو له).",
+            "ختمة": "لختم القرآن في شهر: اقرأ 4 صفحات بعد كل صلاة. لختمه في أسبوع: اقرأ جزئين ونصف يومياً.",
+            "حديث": "قال ﷺ: (بلغوا عني ولو آية). أفضل الأعمال هي ذكر الله الدائم.",
+            "سلام": "وعليكم السلام ورحمة الله وبركاته، كيف يمكنني مساعدتك اليوم؟"
         };
 
-        function ask() {
+        async function ask() {
             let inp = document.getElementById('chatInput');
             let box = document.getElementById('chatMsgs');
-            if(!inp.value) return;
-            box.innerHTML += `<div class="msg user">${inp.value}</div>`;
-            let reply = "مرحباً بك! يمكنني مساعدتك في الأذكار والأدعية لعمك مصطفى رحمه الله.";
-            for(let key in brain) { if(inp.value.includes(key)) reply = brain[key]; }
+            let val = inp.value.trim();
+            if(!val) return;
+
+            box.innerHTML += `<div class="msg user">${val}</div>`;
+            inp.value = "";
+            box.scrollTop = box.scrollHeight;
+
+            let reply = "مرحباً بك! أنا هنا لمساعدتك في الأذكار والأدعية لعمك مصطفى رحمه الله. جرب كلمات مثل (صبر، صدقة، ختمة).";
+            for(let key in brain) { if(val.includes(key)) reply = brain[key]; }
+
             setTimeout(() => {
                 box.innerHTML += `<div class="msg bot">${reply}</div>`;
                 box.scrollTop = box.scrollHeight;
-            }, 500);
-            inp.value = "";
+            }, 600);
         }
 
-        // حصن المسلم
+        // أذكار حصن المسلم
         const hesn = [
             {t:"أذكار الصباح", c:"أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له.."},
             {t:"أذكار المساء", c:"أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له.."},
-            {t:"سيد الاستغفار", c:"اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك.."},
-            {t:"عند الهم", c:"حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم."}
+            {t:"سيد الاستغفار", c:"اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك، وأنا على عهدك ووعدك ما استطعت.."},
+            {t:"عند الهم والحزن", c:"اللهم إني أعوذ بك من الهم والحزن، والعجز والكسل، والبخل والجبن.."},
+            {t:"دعاء للميت", c:"اللهم اغفر له وارحمه، وعافه واعف عنه، وأكرم نزله، ووسع مدخله، واغسله بالماء والثلج والبرد.."}
         ];
-        hesn.forEach(item => {
-            document.getElementById('hesnGrid').innerHTML += `<div class="card" onclick="openM('${item.t}','${item.c}')"><h3>${item.t}</h3><p>اضغط للقراءة</p></div>`;
+
+        const hGrid = document.getElementById('hesnGrid');
+        hesn.forEach(i => {
+            hGrid.innerHTML += `<div class="card" onclick="openM('${i.t}','${i.c}')"><h3>${i.t}</h3><p>اضغط للقراءة</p></div>`;
         });
 
-        // أدعية
-        for(let i=1; i<=10; i++){
-            document.getElementById('duaaGrid').innerHTML += `<div class="card">اللهم ارحم عمي مصطفى واغفر له واجعل الجنة مثواه (دعاء ${i})</div>`;
-        }
+        const dGrid = document.getElementById('duaaGrid');
+        const prayers = [
+            "اللهم اغفر لعمي مصطفى وارحمه.", "اللهم اجعل الجنة مثواه.", "اللهم آنس وحشته في قبره.",
+            "اللهم نقه من الخطايا كما ينقى الثوب الأبيض من الدنس.", "اللهم ابدله داراً خيراً من داره."
+        ];
+        prayers.forEach(p => { dGrid.innerHTML += `<div class="card">${p}</div>`; });
 
         function show(id, btn) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             btn.classList.add('active');
+            window.scrollTo(0,0);
         }
 
         function openM(t, c) {
