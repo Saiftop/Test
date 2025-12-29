@@ -55,7 +55,7 @@
         <div id="ai" class="section active">
             <div class="chat-box">
                 <div class="chat-msgs" id="chatMsgs">
-                    <div class="msg bot">مرحباً يا سيف! أنا مساعدك الذكي Saif AI. اسألني عن أي حديث أو دعاء لروح عمك مصطفى وسأجيبك فوراً.</div>
+                    <div class="msg bot">مرحباً يا سيف! أنا Saif AI. اسألني عن أي حديث أو دعاء لروح عمك مصطفى.</div>
                 </div>
                 <div class="chat-in">
                     <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeypress="if(event.key==='Enter') ask()">
@@ -108,16 +108,22 @@
     <audio id="audio"></audio>
 
     <script>
-        // دالة الذكاء الاصطناعي الحقيقي باستخدام API
+        // دالة الـ AI الحقيقية
         async function ask() {
-            const API_KEY = "AIzaSyDLbkXGGhVqmAG_TlJ0r-vkgyqacuz2RqE";
+            const API_KEY = "AIzaSyDLbkXGGhVqmAG_TlJ0r-vkgyqacuz2RqE"; // المفتاح الخاص بك
             let inp = document.getElementById('chatInput');
             let box = document.getElementById('chatMsgs');
             let val = inp.value.trim();
             if(!val) return;
 
+            // عرض رسالة المستخدم
             box.innerHTML += `<div class="msg user">${val}</div>`;
             inp.value = "";
+            box.scrollTop = box.scrollHeight;
+
+            // إنشاء رسالة "جاري التفكير"
+            let loadingId = "loading-" + Date.now();
+            box.innerHTML += `<div class="msg bot" id="${loadingId}">جاري التفكير...</div>`;
             box.scrollTop = box.scrollHeight;
 
             try {
@@ -134,14 +140,17 @@
                 const data = await response.json();
                 let reply = data.candidates[0].content.parts[0].text;
 
-                box.innerHTML += `<div class="msg bot">${reply}</div>`;
+                // استبدال نص التحميل بالرد الحقيقي
+                document.getElementById(loadingId).innerText = reply;
+
             } catch (error) {
-                box.innerHTML += `<div class="msg bot">حدث خطأ، يرجى المحاولة لاحقاً.</div>`;
+                document.getElementById(loadingId).innerText = "معلش حصلت مشكلة، جرب تبعت تاني.";
+                console.error(error);
             }
             box.scrollTop = box.scrollHeight;
         }
 
-        // أذكار حصن المسلم - من الكود الأصلي الخاص بك
+        // أذكار حصن المسلم الأصلية
         const hesn = [
             {t:"أذكار الصباح", c:"أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له.."},
             {t:"أذكار المساء", c:"أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له.."},
