@@ -1,0 +1,30 @@
+const mongoose = require('mongoose');
+const MONGO_URI = "mongodb+srv://Saif0754:Saif*1234@cluster0.uig6kv3.mongodb.net/SevoStore?retryWrites=true&w=majority";
+
+// موديل المستخدمين
+const UserSchema = new mongoose.Schema({ user: String, pass: String });
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
+
+module.exports = async (req, res) => {
+    if (mongoose.connections[0].readyState === 0) await mongoose.connect(MONGO_URI);
+    
+    if (req.method === 'POST') {
+        const { action, user, pass } = req.body;
+
+        // إنشاء حساب جديد
+        if (action === 'register') {
+            const exists = await User.findOne({ user });
+            if (exists) return res.json({ success: false, msg: "الاسم ده محجوز يا بطل" });
+            await User.create({ user, pass });
+            return res.json({ success: true });
+        }
+
+        // تسجيل دخول
+        if (action === 'login') {
+            const found = await User.findOne({ user, pass });
+            if (found) return res.json({ success: true });
+            return res.json({ success: false, msg: "الاسم أو الباسورد غلط" });
+        }
+    }
+    return res.status(405).json({ msg: "Method not allowed" });
+};
