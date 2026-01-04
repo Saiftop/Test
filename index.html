@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>KILWA STORE</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>🟥 KILWA STORE</h1>
+    <p>اختر باقة الروبكس</p>
+</header>
+
+<!-- بيانات المالك للجميع -->
+<div class="owner-info">
+📞 الرقم الخاص بالمالك: <b>01274796880</b><br>
+📧 البريد الإلكتروني للمالك: <b>MOAZXU6368@GMAIL.COM</b>
+</div>
+
+<!-- اختيار الباقة -->
+<main class="cards" id="packCards">
+    <div class="card" onclick="selectPack(140)">
+        <h2>140 Robux</h2>
+        <p>55 Coins</p>
+    </div>
+    <div class="card" onclick="selectPack(280)">
+        <h2>280 Robux</h2>
+        <p>110 Coins</p>
+    </div>
+    <div class="card" onclick="selectPack(420)">
+        <h2>420 Robux</h2>
+        <p>165 Coins</p>
+    </div>
+</main>
+
+<p class="note">
+    🔔 كل <b>140 Robux</b> = <b>55 Coins</b>
+</p>
+
+<!-- إرسال الطلب -->
+<div class="form-box" id="orderForm" style="display:none;">
+    <p id="packInfo"></p>
+    <input type="text" id="username" placeholder="Roblox Username">
+    <input type="text" id="contact" placeholder="رقم الهاتف أو البريد">
+    <button onclick="sendOrder()">إرسال الطلب</button>
+    <p id="msg"></p>
+</div>
+
+<!-- لوحة الأدمن -->
+<div id="adminPanel" class="admin hidden">
+    <h2>⚙️ لوحة الأدمن</h2>
+    <input type="password" id="adminPass" placeholder="كلمة المرور">
+    <button onclick="loginAdmin()">دخول</button>
+
+    <div id="adminArea" class="hidden">
+        <button class="logout-btn" onclick="logoutAdmin()">خروج</button>
+        <h3>📋 الطلبات</h3>
+        <div id="stats"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>المستخدم</th>
+                    <th>Robux</th>
+                    <th>Coins</th>
+                    <th>التواصل</th>
+                    <th>الحالة</th>
+                    <th>تاريخ</th>
+                    <th>أفعال</th>
+                </tr>
+            </thead>
+            <tbody id="ordersBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- زر الأدمن -->
+<div id="adminBtn">⚙️</div>
+
+<script src="script.js"></script>
+</body>
+</html>
