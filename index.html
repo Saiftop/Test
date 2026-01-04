@@ -1,9 +1,164 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-<meta charset="UTF-8">
-<title>KILWA STORE</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>KILWA STORE</title>
+    <style>
+        /* ================= التصميم العام ================= */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg,#1f1c2c,#928dab);
+            color: white;
+            text-align: center;
+        }
+
+        header {
+            padding: 20px;
+            text-shadow: 1px 1px 3px black;
+        }
+
+        /* بيانات المالك للجميع */
+        .owner-info {
+            margin-bottom: 15px;
+            font-size: 15px;
+            color: #FFD700;
+        }
+
+        /* ================= اختيار الباقة ================= */
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #2c2a4a, #3e3c61);
+            width: 200px;
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+        }
+
+        .card:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.6);
+        }
+
+        .note {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #FFD700;
+        }
+
+        /* ================= نموذج الطلب ================= */
+        .form-box {
+            background: rgba(0,0,0,0.6);
+            padding: 25px;
+            width: 350px;
+            margin: 20px auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+
+        input, button, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        /* ================= لوحة الأدمن ================= */
+        .admin {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            padding: 30px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+
+        #adminArea {
+            margin-top: 15px;
+        }
+
+        .logout-btn {
+            background: #E74C3C;
+            width: auto;
+            padding: 7px 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #C0392B;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: rgba(50,50,80,0.8);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: linear-gradient(90deg, #3c3a5a, #4b4980);
+        }
+
+        select {
+            padding: 4px;
+            border-radius: 5px;
+        }
+
+        #stats {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #00FFFF;
+        }
+
+        /* زر الأدمن الصغير */
+        #adminBtn {
+            position: fixed;
+            bottom: 12px;
+            right: 12px;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0.35;
+            z-index: 9999;
+            transition: opacity 0.3s;
+        }
+        #adminBtn:hover { opacity: 0.8; }
+
+        /* إخفاء العناصر المخفية */
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
 
@@ -12,13 +167,11 @@
     <p>اختر باقة الروبكس</p>
 </header>
 
-<!-- بيانات المالك للجميع -->
 <div class="owner-info">
 📞 الرقم الخاص بالمالك: <b>01274796880</b><br>
 📧 البريد الإلكتروني للمالك: <b>MOAZXU6368@GMAIL.COM</b>
 </div>
 
-<!-- اختيار الباقة -->
 <main class="cards" id="packCards">
     <div class="card" onclick="selectPack(140)">
         <h2>140 Robux</h2>
@@ -38,7 +191,6 @@
     🔔 كل <b>140 Robux</b> = <b>55 Coins</b>
 </p>
 
-<!-- إرسال الطلب -->
 <div class="form-box" id="orderForm" style="display:none;">
     <p id="packInfo"></p>
     <input type="text" id="username" placeholder="Roblox Username">
@@ -47,7 +199,6 @@
     <p id="msg"></p>
 </div>
 
-<!-- لوحة الأدمن -->
 <div id="adminPanel" class="admin hidden">
     <h2>⚙️ لوحة الأدمن</h2>
     <input type="password" id="adminPass" placeholder="كلمة المرور">
@@ -75,9 +226,141 @@
     </div>
 </div>
 
-<!-- زر الأدمن -->
 <div id="adminBtn">⚙️</div>
 
-<script src="script.js"></script>
+<script>
+/* ================= اختيار الباقة ================= */
+function selectPack(robux) {
+    localStorage.setItem("selectedRobux", robux);
+    document.getElementById("packCards").style.display = "none";
+    document.getElementById("orderForm").style.display = "block";
+    showPackInfo();
+}
+
+/* ================= عرض الباقة المختارة ================= */
+function showPackInfo() {
+    const robux = localStorage.getItem("selectedRobux");
+    const coins = (robux / 140) * 55;
+    if (robux) {
+        document.getElementById("packInfo").innerText =
+            `الباقة المختارة: ${robux} Robux = ${coins} Coins`;
+    }
+}
+
+/* ================= إرسال الطلب ================= */
+function sendOrder() {
+    const robux = localStorage.getItem("selectedRobux");
+    const username = document.getElementById("username").value.trim();
+    const contact = document.getElementById("contact").value.trim();
+    const msg = document.getElementById("msg");
+
+    if (!robux || !username || !contact) {
+        msg.style.color = "red";
+        msg.innerText = "❌ يرجى ملء جميع الحقول";
+        return;
+    }
+
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    orders.push({
+        robux: robux,
+        coins: (robux / 140) * 55,
+        username: username,
+        contact: contact,
+        status: "Pending",
+        date: new Date().toLocaleString()
+    });
+
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    msg.style.color = "lightgreen";
+    msg.innerText = "✅ تم إرسال الطلب بنجاح";
+
+    document.getElementById("username").value = "";
+    document.getElementById("contact").value = "";
+}
+
+/* ================= زر الأدمن الصغير ================= */
+document.getElementById("adminBtn").onclick = function() {
+    const panel = document.getElementById("adminPanel");
+    if(panel.classList.contains("hidden")){
+        panel.classList.remove("hidden");
+    } else {
+        panel.classList.add("hidden");
+    }
+};
+
+/* ================= تسجيل دخول الأدمن ================= */
+function loginAdmin() {
+    const pass = document.getElementById("adminPass").value;
+    if(pass === "MOAZ109") {
+        document.getElementById("adminArea").classList.remove("hidden");
+        updateDashboard();
+    } else {
+        alert("كلمة المرور خاطئة");
+    }
+}
+
+/* ================= تسجيل خروج الأدمن ================= */
+function logoutAdmin() {
+    document.getElementById("adminArea").classList.add("hidden");
+    document.getElementById("adminPass").value = "";
+    document.getElementById("adminPanel").classList.add("hidden");
+}
+
+/* ================= تحديث لوحة الأدمن ================= */
+function updateDashboard() {
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const tbody = document.getElementById("ordersBody");
+    const stats = document.getElementById("stats");
+
+    tbody.innerHTML = "";
+    let totalRobux = 0, totalCoins = 0;
+
+    orders.forEach((o,i)=>{
+        totalRobux += Number(o.robux);
+        totalCoins += Number(o.coins);
+
+        tbody.innerHTML += `
+        <tr>
+            <td>${i+1}</td>
+            <td>${o.username}</td>
+            <td>${o.robux}</td>
+            <td>${o.coins}</td>
+            <td>${o.contact}</td>
+            <td>
+                <select onchange="changeStatus(${i}, this.value)">
+                    <option value="Pending" ${o.status==="Pending"?"selected":""}>Pending</option>
+                    <option value="Done" ${o.status==="Done"?"selected":""}>Done</option>
+                </select>
+            </td>
+            <td>${o.date}</td>
+            <td><button onclick="deleteOrder(${i})">حذف</button></td>
+        </tr>`;
+    });
+
+    stats.innerHTML = `<b>إحصائيات:</b> الطلبات: ${orders.length} | مجموع Robux: ${totalRobux} | مجموع Coins: ${totalCoins}`;
+}
+
+/* ================= تغيير حالة الطلب ================= */
+function changeStatus(i,val){
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    if(orders[i]){
+        orders[i].status=val;
+        localStorage.setItem("orders",JSON.stringify(orders));
+        updateDashboard();
+    }
+}
+
+/* ================= حذف طلب ================= */
+function deleteOrder(i){
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    if(confirm("هل أنت متأكد من حذف هذا الطلب؟")){
+        orders.splice(i,1);
+        localStorage.setItem("orders",JSON.stringify(orders));
+        updateDashboard();
+    }
+}
+</script>
 </body>
 </html>
